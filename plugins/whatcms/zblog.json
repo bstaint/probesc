@@ -1,0 +1,13 @@
+{
+    "name": "ZBlog",
+
+    "keyword": {
+        "headers": ["z-blogphp"],
+        "content": ["/zb_users/theme/"],
+        "robots": ["Disallow: /client/"]
+    },
+
+    "path": [
+        {"url": "/client/", "status": 403}
+    ]
+}

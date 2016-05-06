@@ -1,0 +1,10 @@
+{
+    "name": "Dedecms",
+
+    "keyword": {},
+
+    "path": [
+        {"url": "/a/", "status": 200},
+        {"url": "/plus/", "status": 403}
+    ]
+}

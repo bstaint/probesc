@@ -1,0 +1,13 @@
+{
+    "name": "Wordpress",
+
+    "keyword": {
+        "content": [
+            "/wp-content/themes/"
+        ]
+    },
+
+    "path": [
+        {"url": "/wp-includes/wlwmanifest.xml", "status": 200}
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Typecho",
+
+    "keyword": {
+        "content": ["content=\"Typecho", "/usr/themes/"]
+    },
+
+    "path": [
+        {"url": "/usr/themes/", "status": 403},
+        {"url": "/action/xmlrpc", "status": 200}
+    ]
+}

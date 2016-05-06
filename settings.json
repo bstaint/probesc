@@ -1,0 +1,8 @@
+{
+    "timeout" : 15,
+    "disable_ssl": true,
+    "ns" : ["114.114.114.114", "119.29.29.29"],
+    "headers" : {
+        "User-Agent" : "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
+    }
+}

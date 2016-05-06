@@ -1,0 +1,11 @@
+{
+    "name": "ThinkPHP",
+
+    "keyword": {
+        "headers": ["thinkphp"]
+    },
+
+    "path": [
+        {"url": "/Public/", "status": 403}
+    ]
+}

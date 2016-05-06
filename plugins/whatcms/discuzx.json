@@ -1,0 +1,12 @@
+{
+    "name": "Discuz! X",
+
+    "keyword": {
+        "content": ["member.php?mod=logging"],
+        "robots": ["robots.txt for Discuz"]
+    },
+
+    "path": [
+        {"url": "/static/image/common/forum.gif", "status": 200}
+    ]
+}

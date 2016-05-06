@@ -1,0 +1,9 @@
+{
+    "name": "laravel",
+
+    "keyword": {
+        "cookies": ["laravel_session"]
+    },
+
+    "path": []
+}

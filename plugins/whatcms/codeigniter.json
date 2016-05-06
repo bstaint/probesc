@@ -1,0 +1,11 @@
+{
+    "name": "CodeIgniter", 
+
+    "keyword": {
+        "cookies": ["ci_session"]
+    },
+
+    "path": [
+        {"url": "/system/", "status": 403}
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Jekyll",
+
+    "keyword": {
+        "content": [
+            "content=\"Jekyll"
+        ]
+    },
+
+    "path": [
+        {"url": "/assets/js/index.js", "status": 200}
+    ]
+}
