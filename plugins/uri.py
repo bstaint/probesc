@@ -1,33 +1,70 @@
 #!/usr/bin/env python
 # coding: utf-8
+import re
+import urlparse
 import itertools
 import multiprocessing
 
 from libs.utils import cprint
 from libs.net import urlopen
 
-def urlcheck(host, path):
-    req = urlopen('http://%s/%s' % (host, path))
-    if req and not req.history:
-        cprint('%s status %d' % (req.url, req.status_code), '+')
+ports = [80, 88, 7001, 7002, 7003, 8880, 8000, 8080]
+paths = ['/cgi-bin/test-cgi', '/.svn/entries', '/.git/config']
+regex = re.compile('<[Tt][Ii][Tt][Ll][Ee][^>]*>([^<]*)</[Tt][Ii][Tt][Ll][Ee]>')
+
+def parse(req):
+    ''' 解析返回请求内容 '''
+    banner = 'unknown'
+    match = regex.search(req.text)
+    title = (match.group(1) if match else '').strip()
+    server = req.headers.get('server', '')
+
+    if 'servlet' in req.headers.get('x-powered-by', ''):
+        banner = 'servlet'
+    return title, server, banner
+
+def worker(queue):
+    ''' 消费函数 '''
+    while True:
+        task = queue.get()
+        if task is None: break
+        req = urlopen(urlparse.urljoin(*task))
+        # 状态码200且不重定向
+        if req and not req.history:
+            cprint('%s status %d' % (req.url, req.status_code), '+')
+
+def producer(task, queue):
+    ''' 生产函数 '''
+    req = urlopen('http://{}:{}'.format(*task))
+    if req is None: return
+    # 解析请求内容
+    server, title, banner = parse(req)
+    cprint('%s %s %s [%s]' % (req.url, server, title, banner))
+    for uri in paths:
+        queue.put((req.url, uri))
 
 def output(target):
     '''
     name: URI Exploit Finder
-    depends: ipvalid,domains,subweb
-    version: 0.1
+    depends: ipvalid,domains,subnet
+    version: 0.2
     '''
-    uri = ['/cgi-bin/test-cgi', '/.svn/entries', '/.git/config']
-
+    pool = multiprocessing.Pool(10)
+    queue = multiprocessing.Manager().Queue()
+    # 将需要验证的域名以及IP插入domains中
     domains = set([target.host])
-
     domains.update(getattr(target, 'sameip', []))
     domains.update(getattr(target, 'domains', []))
-    domains.update(getattr(target, 'subweb', []))
-
-    pool = multiprocessing.Pool(5)
-    for tup in itertools.product(domains, uri):
-        pool.apply_async(urlcheck, tup)
+    domains.update(getattr(target, 'subnet', []))
+    # 生成一个专用进程来处理url检测
+    proc_work = multiprocessing.Process(target=worker, args=(queue,))
+    proc_work.start()
+    # 进程池检测主机端口是否为Web服务
+    for tup in itertools.product(domains, ports):
+        pool.apply_async(producer, (tup, queue))
 
     pool.close()
     pool.join()
+    # 结束标志，终止工作进程
+    queue.put(None)
+    proc_work.join()
