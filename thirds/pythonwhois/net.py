@@ -7,6 +7,7 @@ def get_whois_raw(domain, server="", previous=None, rfc3490=True, never_cut=Fals
     server_list = server_list or []
     # Sometimes IANA simply won't give us the right root WHOIS server
     exceptions = {
+            ".cn": "cwhois.cnnic.cn",
             ".ac.uk": "whois.ja.net",
             ".ps": "whois.pnina.ps",
             ".buzz": "whois.nic.buzz",
