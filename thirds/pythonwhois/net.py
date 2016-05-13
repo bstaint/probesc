@@ -7,7 +7,7 @@ def get_whois_raw(domain, server="", previous=None, rfc3490=True, never_cut=Fals
     server_list = server_list or []
     # Sometimes IANA simply won't give us the right root WHOIS server
     exceptions = {
-            ".cn": "cwhois.cnnic.cn",
+            ".cn": "ewhois.cnnic.cn",
             ".ac.uk": "whois.ja.net",
             ".ps": "whois.pnina.ps",
             ".buzz": "whois.nic.buzz",
@@ -98,22 +98,23 @@ def get_root_server(domain):
     raise shared.WhoisException("No root WHOIS server found for domain.")
     
 def whois_request(domain, server, port=43):
-    print server
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((server, port))
-    sock.send(("%s\r\n" % domain).encode("utf-8"))
-    buff = b""
-    # Connection reset by peer
-    # ex: whois.sudu.cn 
-    while True:
-        try:
-            data = sock.recv(1024)
-        except:
-            data = b""
+    for _ in range(2):
+        print server
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        if len(data) == 0:
-            break
-        buff += data
+        sock.connect((server, port))
+        sock.send((domain + '\r\n').encode("utf-8"))
+
+        buff = b""
+        while True:
+            try:
+                data = sock.recv(1024)
+            except:
+                data = b""
+
+            if not data: break
+            buff += data
+        if buff: break
 
     try:
         return buff.decode("utf-8")

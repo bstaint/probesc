@@ -34,11 +34,11 @@ def output(target):
         url = target.geturl(path)
         log.debug('URL: %s' % url)
 
-        for url in itertools.product([url], ['/.php', '/1.php']):
+        for url in itertools.product([url], ['/.php', '/1.php', '%00.php']):
             req = urlopen(''.join(url))
             if req and not req.history and \
                'text/html' in req.headers['content-type']:
-                cprint('nginx bad!', '+'); break
+                cprint('Nginx Parser Vulnerability', '+'); break
     elif 'iis' in server:
         pass
     elif 'apache' in server:
