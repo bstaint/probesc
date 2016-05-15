@@ -3,7 +3,7 @@
 import re
 
 from libs.utils import cprint
-from libs.net import urlopen, ssl_cert
+from libs.net import urlopen
 
 apis = [
     ('http://m.tool.chinaz.com/same/?s=%s', '_blank>(.*?)</a></b>'),
@@ -17,12 +17,6 @@ def output(target):
     depends: cdn
     '''
     target.raw_sameip = set()
-
-    # 从ssl证书中提取相关域名
-    if target.scheme is 'https':
-        certs = ssl_cert(target.host, target.port)
-        for _, domain in certs.get('subjectAltName', []):
-            target.raw_sameip.update(domain.replace('*.', ''))
 
     # 通过API来获取
     if getattr(target, 'cdn', False): return

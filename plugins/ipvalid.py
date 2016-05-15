@@ -6,7 +6,7 @@ from difflib import SequenceMatcher
 from operator import itemgetter
 
 from libs.utils import cprint
-from libs.net import valid_ip, urlopen, ssl_cert
+from libs.net import valid_ip, urlopen
 
 apis = [
     ('http://m.tool.chinaz.com/same/?s=%s', '_blank>(.*?)</a></b>'),

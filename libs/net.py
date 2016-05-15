@@ -35,6 +35,8 @@ def ssl_cert(host, port=443):
 def urlopen(url, **kwargs):
     ''' URL GET请求 '''
     attr = kwargs.pop('attr', (None, None))
+    params = kwargs.pop('params', None)
+
     pattern = re.compile('charset=(?:")?(?P<chatset>[a-zA-Z0-9\-]+)')
     opts = {
         'headers': kwargs.pop('headers', option['headers']),
@@ -42,11 +44,16 @@ def urlopen(url, **kwargs):
         'verify': False
     }
     try:
-        req = requests.get(url, **opts)
+        if params:
+            req = requests.post(url, params=params, **opts)
+        else:
+            req = requests.get(url, **opts)
+
         # 检测编码
         match = pattern.search(req.content)
         if match and req.encoding == 'ISO-8859-1':
             req.encoding = match.group('chatset')
+
         return getattr(req, *attr) if attr[0] else req
     except requests.exceptions.RequestException, e:
         return attr[1]

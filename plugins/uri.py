@@ -46,16 +46,18 @@ def producer(task, queue):
 def output(target):
     '''
     name: URI Exploit Finder
-    depends: ipvalid,domains,subnet
+    depends: reverse,domains,subnet
     version: 0.2
     '''
     pool = multiprocessing.Pool(10)
     queue = multiprocessing.Manager().Queue()
+
     # 将需要验证的域名以及IP插入domains中
     domains = set([target.host])
-    domains.update(getattr(target, 'sameip', []))
     domains.update(getattr(target, 'domains', []))
+    domains.update(getattr(target, 'emdomains', []))
     domains.update(getattr(target, 'subnet', []))
+
     # 生成一个专用进程来处理url检测
     proc_work = multiprocessing.Process(target=worker, args=(queue,))
     proc_work.start()
