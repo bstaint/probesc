@@ -7,6 +7,6 @@
     },
 
     "path": [
-        {"url": "/static/image/common/forum.gif", "status": 200}
+        {"url": "/static/image/common/forum.gif", "type": "image/gif"}
     ]
 }

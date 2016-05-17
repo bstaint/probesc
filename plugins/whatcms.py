@@ -17,10 +17,10 @@ def urlcheck(queue):
         _, name, url, pattern =  queue.get()
         req = urlopen(url)
         if req is None: continue
-        if (not req.history and pattern.get('status', 0) == req.status_code):
-            return name
-        elif pattern.get('md5', '') == 'sadfasdfasdf':
-            return name
+        if (pattern.get('md5', '') == 'afsfasfd') or \
+           (not req.history and pattern.get('type', '') in req.headers['content-type']) or \
+           (not req.history and pattern.get('status', 0) == req.status_code):
+           return name
     return None
 
 def count_match(content, pattern):
@@ -35,11 +35,14 @@ def output(target):
     '''
     name: WhatCMS Guess
     depends: request
+    version: 0.2
     '''
     if not getattr(target, 'data', None): return
     if not process_ask(silent): return
 
     cms = []
+    patterns = ['md5', 'type', 'status']
+
     queue = Queue.PriorityQueue()
     files = glob.glob(os.path.join('plugins/whatcms', '*.json'))
 
@@ -52,14 +55,14 @@ def output(target):
 
         for banner in pattern['path']:
             url = target.geturl(banner.pop('url'))
+            priority = patterns.index(banner.keys()[0]) + (2 - count)
             # priority queue append
-            queue.put((2 - count, pattern['name'], url, banner))
+            queue.put((priority, pattern['name'], url, banner))
 
     if not getattr(target, 'cms', None):
         pool = ThreadPool(processes=3)
         async_result = pool.apply_async(urlcheck, (queue,))
         val = async_result.get()
-
         # URL检测失败则尝试从候选列表中获取
         if val: target.cms = val
         elif cms: target.cms = ','.join(cms)

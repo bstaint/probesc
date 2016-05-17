@@ -1,0 +1,9 @@
+{
+    "name": "WeCenter", 
+
+    "keyword": {},
+
+    "path": [
+        {"url": "/static/js/plug_module/plug-in_module.js", "type": "text/javascript"}
+    ]
+}

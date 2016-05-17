@@ -8,6 +8,6 @@
     },
 
     "path": [
-        {"url": "/wp-includes/wlwmanifest.xml", "status": 200}
+        {"url": "/wp-includes/wlwmanifest.xml", "type": "text/xml"}
     ]
 }

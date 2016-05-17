@@ -8,6 +8,6 @@
     },
 
     "path": [
-        {"url": "/assets/js/index.js", "status": 200}
+        {"url": "/assets/js/index.js", "type": "text/javascript"}
     ]
 }
