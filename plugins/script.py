@@ -34,9 +34,9 @@ def check_match(content, type, func=None):
 
 def url_extract(content, host):
     ''' 获取页面url '''
-    pattern = '(?:("|\'))?([^\'|"]+)\.(php|asp|aspx|jsp|action|do)(?= |"|\'|\?|/)'
+    pattern = '=(?:"|\')?([^ ]+)\.(php|asp|aspx|jsp|action|do)(?= |"|\'|\?|\/)'
     for m in re.finditer(pattern, content):
-        parsed_url = urlparse('.'.join(m.group(2, 3)))
+        parsed_url = urlparse('.'.join(m.group(1, 2)))
         if parsed_url.netloc in ['', host]:
             return parsed_url.path
     return u''
