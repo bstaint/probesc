@@ -1,0 +1,14 @@
+{
+  "name": "EmpireCMS",
+  "keyword": {},
+  "path": [
+    {
+      "url": "/e/data/",
+      "status": 403
+    },
+    {
+      "url": "/d/file/index.html",
+      "status": 200
+    }
+  ]
+}

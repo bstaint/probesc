@@ -52,10 +52,9 @@ def output(target):
 
     for patt in map(json_dict, files):
         # 规则载入失败时跳过
-        if not patt.get('keyword', {}): continue
+        if not patt: continue
         # 统计关键字匹配次数
         count = count_match(target.data, patt['keyword'])
-        print patt['name'], count
         if count is True:
             target.cms = patt['name']; break
         elif count > 0:

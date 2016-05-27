@@ -8,6 +8,7 @@
     },
 
     "path": [
-        {"url": "/client/", "status": 403}
+        {"url": "/zb_system/", "status": 200},
+        {"url": "/zb_system/xml-rpc/?rsd", "type": "text/xml"}
     ]
 }
