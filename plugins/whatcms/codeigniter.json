@@ -5,7 +5,5 @@
         "cookies": ["ci_session"]
     },
 
-    "path": [
-        {"url": "/system/", "status": 403}
-    ]
+    "path": []
 }

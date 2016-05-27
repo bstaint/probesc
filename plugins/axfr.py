@@ -34,7 +34,8 @@ pattern = set([
     "dnsdun.com",
     "ffdns.net",
     "ezdnscenter",
-    "sfn.cn"
+    "sfn.cn",
+    "365cyd.net"
 ])
 
 def output(target):

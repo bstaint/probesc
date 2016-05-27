@@ -17,17 +17,21 @@ def urlcheck(queue):
         _, name, url, pattern =  queue.get()
         req = urlopen(url)
         if req is None: continue
-        if (pattern.get('md5', '') == 'afsfasfd') or \
-           (not req.history and pattern.get('type', '') in req.headers['content-type']) or \
-           (not req.history and pattern.get('status', 0) == req.status_code):
-           return name
+        # 匹配md5
+        if pattern.get('md5', '') == 'afsfasfd': return name
+        if req.history: continue # 防止URL跳转
+        # 匹配HTTP信息
+        if pattern.get('type', 'nothing') in req.headers['content-type']:
+            return name
+        if pattern.get('status', 0) == req.status_code:
+            return name
     return None
 
-def count_match(content, pattern):
+def count_match(data, pattern):
     counter = 0
     for key, vals in pattern.items():
-        if key not in content: continue
-        counter += all(matched(content[key], v) for v in vals)
+        if key not in data: continue
+        counter += all(matched(data[key], v) for v in vals)
         if counter >= 2: return True
     return counter
         
@@ -35,7 +39,7 @@ def output(target):
     '''
     name: WhatCMS Guess
     depends: request
-    version: 0.2
+    version: 0.3
     '''
     if not getattr(target, 'data', None): return
     if not process_ask(silent): return
@@ -46,18 +50,22 @@ def output(target):
     queue = Queue.PriorityQueue()
     files = glob.glob(os.path.join('plugins/whatcms', '*.json'))
 
-    for pattern in map(json_dict, files):
-        count = count_match(target.data, pattern['keyword'])
+    for patt in map(json_dict, files):
+        # 规则载入失败时跳过
+        if not patt.get('keyword', {}): continue
+        # 统计关键字匹配次数
+        count = count_match(target.data, patt['keyword'])
+        print patt['name'], count
         if count is True:
-            target.cms = pattern['name']; break
+            target.cms = patt['name']; break
         elif count > 0:
-            cms.append(pattern['name'])
+            cms.append(patt['name'])
 
-        for banner in pattern['path']:
+        for banner in patt['path']:
             url = target.geturl(banner.pop('url'))
+            # 计算优先级，算法：patterns顺序 + 匹配次数，越低优先级越高
             priority = patterns.index(banner.keys()[0]) + (2 - count)
-            # priority queue append
-            queue.put((priority, pattern['name'], url, banner))
+            queue.put((priority, patt['name'], url, banner))
 
     if not getattr(target, 'cms', None):
         pool = ThreadPool(processes=3)

@@ -2,6 +2,7 @@
     "name": "ThinkPHP",
 
     "keyword": {
+        "content": ["/Public/"],
         "headers": ["thinkphp"]
     },
 
