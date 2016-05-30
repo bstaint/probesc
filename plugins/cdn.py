@@ -43,7 +43,8 @@ pattern = {
         'kunlunar',
         'aliyun',
         'cdn-cdn.net',
-        'alicloudlayer.com'
+        'alicloudlayer.com',
+        'akadns.net'
     ])
 }
 

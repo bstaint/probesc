@@ -51,9 +51,9 @@ def output(target):
     files = glob.glob(os.path.join('plugins/whatcms', '*.json'))
 
     for patt in map(json_dict, files):
-        # 规则载入失败时跳过
+        # 失败时跳过
         if not patt: continue
-        # 统计关键字匹配次数
+        # 统计匹配次数
         count = count_match(target.data, patt['keyword'])
         if count is True:
             target.cms = patt['name']; break

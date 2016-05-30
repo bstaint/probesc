@@ -1,0 +1,10 @@
+{
+  "name": "Ecshop",
+  "keyword": {},
+  "path": [
+    {
+      "url": "/data/cycle_image.xml",
+      "type": "text/xml"
+    },
+  ]
+}
