@@ -17,7 +17,12 @@ if option['disable_ssl']:
 def valid_ip(host):
     ''' lookup address with gethostbyname '''
     try:
-        ipaddr = socket.gethostbyname_ex(host)[-1][0]
+        local = socket.gethostbyname_ex(host)
+        # 防止DNS劫持页面
+        if local[0].endswith('localdomain'):
+            ipaddr = None
+        else:
+            ipaddr = local[-1][0]
     except socket.error:
         ipaddr = None
     return ipaddr

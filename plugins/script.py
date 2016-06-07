@@ -21,7 +21,7 @@ pattern = {
     },
     'build': {
         'PHP': ['PHP'],
-        'JSP': ['J2EE'],
+        'JSP': ['J2EE', 'Spring'],
         'ASP/ASPX': ['ASP'],
     }
 }
