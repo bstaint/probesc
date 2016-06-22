@@ -27,7 +27,8 @@ pattern = set([
     "west263.com",
     "gkg.net",
     "enamewhois.com",
-    "privacy"
+    "privacy",
+    'gandi.net'
 ])
 
 def output(target):

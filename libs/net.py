@@ -16,15 +16,14 @@ if option['disable_ssl']:
 
 def valid_ip(host):
     ''' lookup address with gethostbyname '''
+    ipaddr = None
     try:
-        local = socket.gethostbyname_ex(host)
+        hostname, alias, ipaddrs = socket.gethostbyname_ex(host)
         # 防止DNS劫持页面
-        if local[0].endswith('localdomain'):
-            ipaddr = None
-        else:
-            ipaddr = local[-1][0]
+        if host == hostname or host in alias:
+            ipaddr = ipaddrs[0]
     except socket.error:
-        ipaddr = None
+        pass
     return ipaddr
 
 def ssl_cert(host, port=443):
@@ -53,7 +52,6 @@ def urlopen(url, **kwargs):
             req = requests.post(url, params=params, **opts)
         else:
             req = requests.get(url, **opts)
-
         # 检测编码
         match = pattern.search(req.content)
         if match and req.encoding == 'ISO-8859-1':

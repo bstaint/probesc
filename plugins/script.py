@@ -6,7 +6,7 @@ from libs.utils import cprint, matched
 
 pattern = {
     'powered': {
-        'ASP/ASPX': ['asp'],
+        'ASP/ASPX': ['asp', 'ASP.NET'],
         'PHP': ['php']
     },
     'cookie': {
