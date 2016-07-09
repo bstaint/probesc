@@ -18,9 +18,13 @@ def valid_ip(host):
     ''' lookup address with gethostbyname '''
     ipaddr = None
     try:
-        hostname, alias, ipaddrs = socket.gethostbyname_ex(host)
-        # 防止DNS劫持页面
-        if host == hostname or host in alias:
+        # 防止isp劫持
+        if not hasattr(valid_ip, 'fake_ip'):
+            _, _, ipaddrs = socket.gethostbyname_ex('notexistsfuckisp' + host)
+            valid_ip.fake_ip = ipaddrs[0]
+
+        _, _, ipaddrs = socket.gethostbyname_ex(host)
+        if ipaddrs[0] != valid_ip.fake_ip:
             ipaddr = ipaddrs[0]
     except socket.error:
         pass
