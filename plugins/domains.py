@@ -16,10 +16,14 @@ apis_url = [
 def output(target):
     '''
     name: Sub-Domain Finder
-    depends: request,axfr
+    depends: request,axfr,sameip
     version: 0.2
     '''
     def valid_tld(domain):
+        # 解决unicode编码问题
+        if type(domain) == unicode:
+            domain = domain.encode('utf-8')
+
         return str.endswith(domain, target.tld)
 
     target.domains = set()
