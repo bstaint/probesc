@@ -5,6 +5,7 @@ import os
 import sys
 import json
 import time
+import itertools
 from glob import glob
 
 from thirds.colorama import init
@@ -12,10 +13,21 @@ from thirds.colorama import Fore
 
 init()
 
+def option_input(msg='continue? (y/N) ', options='yn', default='y'):
+    ''' 询问是否继续，返回指定选项 '''
+    ret = {}
+    if type(options) is list:
+        for i in range(1, len(options)+1):
+            opts_comb = itertools.combinations(options, i)
+            ret.update({str(sum(ele)): ele for ele in opts_comb})
+    else:
+        ret = dict(zip(options, options))
 
-def process_ask(slient=False, msg='how do you want to proceed? (y/N) '):
-    ''' 询问是否继续，用于跳过耗时长的操作 '''
-    return slient or raw_input(msg).lower() == 'y'
+    if getattr(option_input, 'slient', False):
+        return ret[default]
+
+    ch = raw_input(msg).lower()
+    return ret[ch] if ch in ret.keys() else ret[default]
 
 def runtime(fmt='%H:%M:%S'):
     ''' 返回当前时间 '''

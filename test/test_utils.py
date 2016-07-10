@@ -13,6 +13,11 @@ class UtilsTestCase(unittest.TestCase):
         cprint("test", '+')
         cprint("test", '*', True)
 
+    def test_option_input(self):
+        # option_input.slient = True
+        print option_input();
+        print option_input('1 2 4: ', [1,2,4], '7');
+
 
 if __name__ == '__main__':
      unittest.main(verbosity=2)
