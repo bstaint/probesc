@@ -13,7 +13,7 @@ from thirds.colorama import Fore
 
 init()
 
-def option_input(msg='continue? (y/N) ', options='yn', default='y'):
+def option_input(msg='continue? (Y/n) ', options='yn', default='y'):
     ''' 询问是否继续，返回指定选项 '''
     ret = {}
     if type(options) is list:
