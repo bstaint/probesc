@@ -20,7 +20,7 @@ def valid_ip(host):
     try:
         # 防止isp劫持
         if not hasattr(valid_ip, 'fake_ip'):
-            _, _, ipaddrs = socket.gethostbyname_ex('notexistsfuckisp' + host)
+            _, _, ipaddrs = socket.gethostbyname_ex('notexistsfuckispsbbaidu.com')
             valid_ip.fake_ip = ipaddrs[0]
 
         _, _, ipaddrs = socket.gethostbyname_ex(host)
