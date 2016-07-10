@@ -63,7 +63,6 @@ def output(target):
     # 根据选择合并数据，删除自身域名
     domains.update(*[data[r] for r in ret])
     domains.discard(target.tld)
-
     # 生成一个专用进程来处理url检测
     proc_work = multiprocessing.Process(target=worker, args=(queue,))
     proc_work.start()
