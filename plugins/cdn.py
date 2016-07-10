@@ -58,8 +58,8 @@ def output(target):
     version: 0.2
     '''
     target.cdn = False
-    if redirect: return
 
+    if target.redirect: return
     # 检测CNAME别名
     if getattr(target, 'zone', None):
         cname = map(itemgetter(1), target.zone.get('CNAME', []))

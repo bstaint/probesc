@@ -6,7 +6,7 @@ import socket
 from itertools import chain
 
 from libs import option
-from libs.utils import cprint
+from libs.utils import cprint, option_input
 from libs.log import Logger
 from libs.target import Target
 from libs.plugin import Plugins
@@ -22,8 +22,8 @@ class ProbeEngine(object):
         # 日志类
         self.logger = Logger('probesc', 'logs/%s.log' % self.target.host)
         # 参数配置
-        self.option = dict(redirect=args.redirect, silent=args.silent)
-        self.option.update(**option)
+        self.target.redirect = args.redirect
+        option_input.silent = args.silent
 
     def find_modules(self, src_dir):
         ''' 查找插件模块 '''
@@ -33,8 +33,7 @@ class ProbeEngine(object):
     def execute(self, name, func):
         ''' 执行插件，捕获异常 '''
         try:
-            logger = self.logger.get(name)
-            func.func_globals.update(log=logger, **self.option)
+            func.func_globals.update(log=self.logger.get(name))
             func(self.target)
         except (PluginWarning, TargetWarning), e:
             cprint('[%s] %s' % (name, e), '*')

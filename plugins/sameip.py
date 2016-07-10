@@ -16,13 +16,12 @@ def output(target):
     name: SameIP Finder
     depends: cdn
     '''
-    target.raw_sameip = set()
-
-    # 通过API来获取
     if getattr(target, 'cdn', False): return
+
+    sameip = []
     for url, regex in apis:
         content = urlopen(url % target.host, attr=('text', ''))
-        target.raw_sameip.update(re.findall(regex, content))
+        sameip.extend(re.findall(regex, content))
 
-    target.raw_sameip = list(target.raw_sameip)[:50]
+    target.raw_sameip = set(sameip[:50])
     print target.raw_sameip

@@ -7,7 +7,7 @@ from multiprocessing.managers import Queue
 
 from libs.utils import cprint, matched
 from libs.utils import json_dict
-from libs.utils import process_ask
+from libs.utils import option_input
 from libs.net import urlopen
 
 
@@ -42,7 +42,7 @@ def output(target):
     version: 0.3
     '''
     if not getattr(target, 'data', None): return
-    if not process_ask(silent): return
+    if option_input() != 'y': return
 
     cms = []
     patterns = ['md5', 'type', 'status']

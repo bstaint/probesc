@@ -14,17 +14,17 @@ apis = [
 
 def output(target):
     '''
-    name: Reverse Email
+    name: Reverse Email Finder
     depends: whois
     '''
-    if getattr(target, 'domain', None):
-        target.emdomains = set()
+    if not getattr(target, 'domain', None): return
 
-        for url, regex in apis:
-            content = urlopen(url % target.domain[0], attr=('text', ''))
-            target.emdomains.update(re.findall(regex, content))
+    domains = []
+    for url, regex in apis:
+        content = urlopen(url % target.domain[0], attr=('text', ''))
+        domains.extend(re.findall(regex, content))
 
-        target.emdomains = list(target.emdomains)[:50]
-        log.debug('DOMAINS: %s' % ', '.join(target.emdomains))
+    target.email_domains = set(domains[:50])
+    log.debug('DOMAINS: %s' % ', '.join(target.email_domains))
 
-        print target.emdomains
+    print target.email_domains

@@ -5,7 +5,7 @@ import urlparse
 import itertools
 import multiprocessing
 
-from libs.utils import cprint
+from libs.utils import cprint, option_input
 from libs.net import urlopen
 
 ports = [80, 88, 7001, 7002, 7003, 8880, 8000, 8080]
@@ -52,11 +52,17 @@ def output(target):
     pool = multiprocessing.Pool(10)
     queue = multiprocessing.Manager().Queue()
 
-    # 将需要验证的域名以及IP插入domains中
+    data = {
+        1: getattr(target, 'domains', set()),
+        2: getattr(target, 'email_domains', set()),
+        4: getattr(target, 'subnet', set())
+    }
+
     domains = set([target.host])
-    domains.update(getattr(target, 'domains', []))
-    domains.update(getattr(target, 'emdomains', []))
-    domains.update(getattr(target, 'subnet', []))
+    ret = option_input('select extract data subdomain/domains/ip? [1/2/4] ', [1,2,4], '7')
+    # 根据选择合并数据，删除自身域名
+    domains.update(*[data[r] for r in ret])
+    domains.discard(target.tld)
 
     # 生成一个专用进程来处理url检测
     proc_work = multiprocessing.Process(target=worker, args=(queue,))
