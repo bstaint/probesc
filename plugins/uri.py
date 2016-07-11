@@ -59,7 +59,7 @@ def output(target):
     }
 
     domains = set([target.host])
-    ret = option_input('select extract data subdomain/domains/ip? [1/2/4] ', [1,2,4], '7')
+    ret = option_input('select extract data subdomain/domains/ip? [1/2/4] ', [1,2,4], '3')
     # 根据选择合并数据，删除自身域名
     domains.update(*[data[r] for r in ret])
     domains.discard(target.tld)
