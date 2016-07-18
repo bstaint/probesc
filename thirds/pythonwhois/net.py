@@ -99,7 +99,6 @@ def get_root_server(domain):
     
 def whois_request(domain, server, port=43):
     for _ in range(3):
-        print server
         buff = b""
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

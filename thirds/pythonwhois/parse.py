@@ -255,6 +255,7 @@ registrant_regexes = [
     "owner:\s+(?P<name>.+)", # .br
     "person:\s+(?P<name>.+)", # nic.ru (person)
     "org:\s+(?P<organization>.+)", # nic.ru (organization)
+    "Registrant Name:(?P<name>.*)\nRegistrant Organization:(?P<organisation>.*)\nRegistrant Street:(?P<street1>.+)\nRegistrant City:(?P<city>.+)\nRegistrant Province/State:(?P<state>.*)\nRegistrant Postal Code:(?P<postalcode>.+)\nRegistrant Country:(?P<country>.+)\nRegistrant Phone:(?P<phone>.*)\n(?:Registrant Phone Ext:(?P<phone_ext>.*)\n)Registrant Fax:(?P<fax>.*)\n(Registrant Fax Ext:(?P<fax_ext>.*)\n)Registrant Email:(?P<email>.*)\n", #topvhost.com
 ]
 
 tech_contact_regexes = [

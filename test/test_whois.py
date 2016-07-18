@@ -14,7 +14,8 @@ def preprocess_regex(regex):
 
 content = '''
 '''
-regex = preprocess_regex('')
+regex = preprocess_regex("")
+
 match = re.search(regex, content)
 print match
 # req = get_whois('baidu.com')
