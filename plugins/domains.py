@@ -26,7 +26,6 @@ def output(target):
         return str.endswith(domain, target.tld)
 
     target.domains = set()
-    regex = re.compile('(?<=\/\/)([\w\-]+\.)*?%s' % target.tld)
     # 从zone里过滤子域名
     for val in getattr(target, 'zone', {}).values():
         domains = filter(valid_tld, map(itemgetter(0), val))
@@ -35,6 +34,7 @@ def output(target):
     if getattr(target, 'axfr', False): return
 
     # 从content中匹配子域名
+    regex = re.compile('(?<=\/\/)([\w\-]+\.)*?%s' % target.tld)
     for m in regex.finditer(target.data['content']):
         target.domains.add(m.group())
 
