@@ -29,7 +29,8 @@ pattern = set([
     "enamewhois.com",
     "privacy",
     'gandi.net',
-    'topvhost.com'
+    'topvhost.com',
+    'freenom.com'
 ])
 
 def output(target):
@@ -50,8 +51,6 @@ def output(target):
         if 'emails' in resp:
             emails = map(unicode.lower, resp['emails'])
         else: return
-    print resp
-    return
 
     log.debug('Email: %s' % ','.join(emails))
     email = next(filtered(emails, *pattern), None)
