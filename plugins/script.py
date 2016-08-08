@@ -7,7 +7,7 @@ from libs.utils import cprint, matched
 pattern = {
     'powered': {
         'ASP/ASPX': ['asp', 'ASP.NET'],
-        'PHP': ['php']
+        'PHP': ['php', 'PHP']
     },
     'cookie': {
         'JSP': ['JSESSIONID'],
@@ -20,7 +20,7 @@ pattern = {
         'ASP/ASPX': ['.asp', '.aspx', '.ashx']
     },
     'build': {
-        'PHP': ['PHP'],
+        'PHP': ['PHP', 'Laravel'],
         'JSP': ['J2EE', 'Spring'],
         'ASP/ASPX': ['ASP'],
     }
@@ -56,18 +56,20 @@ def output(target):
 
     if not target.script: # COOKIES
         target.script = check_match(target.data['cookies'], 'cookie')
+
     # 检测buildwith
     if not target.script:
-        context = getattr(target, 'raw_build', '')
-        match = re.search('framework\/([^"]+)"><', context)
+        raw_build = getattr(target, 'raw_build', '')
+        match = re.search('framework\/([^"]+)"><', raw_build)
         if match:
-            target.script = check_match(match.group(1), 'build')
             log.debug('Match: %s' % match.group(1))
+            target.script = check_match(match.group(1), 'build')
+
     # 检查x-powered-by
     if not target.script:
-        context = target.data['headers'].get('x-powered-by', '')
-        target.script = check_match(context, 'powered')
-        log.debug('Powered: %s' % context)
+        powered = target.data['headers'].get('x-powered-by', '')
+        log.debug('Powered: %s' % powered)
+        target.script = check_match(powered, 'powered')
 
     if target.script:
         cprint(target.script, '+')
