@@ -2,6 +2,7 @@
 # coding: utf-8
 import os
 import glob
+import uuid
 from multiprocessing.pool import ThreadPool
 from multiprocessing.managers import Queue
 
@@ -16,24 +17,26 @@ def urlcheck(queue):
     while not queue.empty():
         _, name, url, pattern =  queue.get()
         req = urlopen(url)
-        if req is None: continue
-        # 匹配md5
+        if not req: continue
+        if req.headers.get('content-length', 0) in urlcheck.status_404:
+            continue
+        # 匹配MD5
         if pattern.get('md5', '') == 'afsfasfd': return name
         if req.history: continue # 防止URL跳转
-        # 匹配HTTP信息
-        if pattern.get('type', 'nothing') in req.headers['content-type']:
+        # 匹配Content-Type信息
+        if pattern.get('type', 'unknown') in req.headers['content-type']:
             return name
         if pattern.get('status', 0) == req.status_code:
             return name
     return None
 
-def count_match(data, pattern):
-    counter = 0
+def counter(data, pattern):
+    count = 0
     for key, vals in pattern.items():
         if key not in data: continue
-        counter += all(matched(data[key], v) for v in vals)
-        if counter >= 2: return True
-    return counter
+        count += all(matched(data[key], v) for v in vals)
+        if count >= 2: return True
+    return count
         
 def output(target):
     '''
@@ -51,10 +54,9 @@ def output(target):
     files = glob.glob(os.path.join('plugins/whatcms', '*.json'))
 
     for patt in map(json_dict, files):
-        # 失败时跳过
-        if not patt: continue
-        # 统计匹配次数
-        count = count_match(target.data, patt['keyword'])
+        if not patt: continue # 失败时跳过
+
+        count = counter(target.data, patt['keyword']) # 统计匹配次数
         if count is True:
             target.cms = patt['name']; break
         elif count > 0:
@@ -67,6 +69,16 @@ def output(target):
             queue.put((priority, patt['name'], url, banner))
 
     if not getattr(target, 'cms', None):
+        # 采集404结果
+        rand_uuid = str(uuid.uuid4())
+        status_file = urlopen(target.geturl(rand_uuid + '.js'),
+                              attr=('headers', {}))
+        status_dir = urlopen(target.geturl(rand_uuid + '/'),
+                             attr=('headers', {}))
+        # 将404的页面长度存入urlcheck中
+        urlcheck.status_404 = (status_file.get('content-length', 0),
+                               status_file.get('content-length', 0))
+
         pool = ThreadPool(processes=3)
         async_result = pool.apply_async(urlcheck, (queue,))
         val = async_result.get()
