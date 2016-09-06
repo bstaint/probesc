@@ -61,6 +61,6 @@ def output(target):
 
     output = 'Email: %s' % email
     if expired:
-        days = (expired - datetime.now()).days
-        output += ', Expired Day: %d' % days
+        output += ', Expired Day: %d' % (expired - datetime.now()).days
+
     cprint(output, '+')
