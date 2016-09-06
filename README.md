@@ -4,7 +4,7 @@
 Require:
 ========================
 - requests
-- python-nmap(nmap)
+- python-nmap (ports插件选用)
 
 更新日志：
 =========================
