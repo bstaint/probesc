@@ -17,13 +17,16 @@ if option['disable_ssl']:
 def valid_ip(host):
     ''' lookup address with gethostbyname '''
     ipaddr = None
-    try:
-        # 防止isp劫持
-        if not hasattr(valid_ip, 'fake_ip'):
-            _, _, ipaddrs = socket.gethostbyname_ex('notexistsfuckispsbbaidu.com')
-            valid_ip.fake_ip = ipaddrs[0]
+    fake_domain = 'notexistsfuckispsbbaidu.com'
 
-        _, _, ipaddrs = socket.gethostbyname_ex(host)
+    try:
+        # 防止ISP劫持
+        if not hasattr(valid_ip, 'fake_ip'):
+            try: valid_ip.fake_ip = socket.gethostbyname(fake_domain)
+            except socket.error: valid_ip.fake_ip = None;
+
+        _,_,ipaddrs = socket.gethostbyname_ex(host)
+
         if ipaddrs[0] != valid_ip.fake_ip:
             ipaddr = ipaddrs[0]
     except socket.error:
@@ -56,7 +59,7 @@ def urlopen(url, **kwargs):
             req = requests.post(url, params=params, **opts)
         else:
             req = requests.get(url, **opts)
-        # 检测编码
+        # 获取编码
         match = pattern.search(req.content)
         if match and req.encoding == 'ISO-8859-1':
             req.encoding = match.group('chatset')

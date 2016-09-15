@@ -22,7 +22,7 @@ class Target(object):
         self.host = parts.hostname
         self.ip = valid_ip(self.host)
         if not self.ip:
-            raise TargetError('target %s can not resolv.' % self.host)
+            raise TargetError('target %s service not known.' % self.host)
 
         self.port = parts.port if parts.port else self.prot[parts.scheme]
         self.scheme = parts.scheme
