@@ -23,7 +23,7 @@ def valid_ip(host):
         # 防止ISP劫持
         if not hasattr(valid_ip, 'fake_ip'):
             try: valid_ip.fake_ip = socket.gethostbyname(fake_domain)
-            except socket.error: valid_ip.fake_ip = None;
+            except socket.error: valid_ip.fake_ip = None
 
         _,_,ipaddrs = socket.gethostbyname_ex(host)
 
