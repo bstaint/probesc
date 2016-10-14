@@ -30,7 +30,8 @@ pattern = set([
     "privacy",
     'gandi.net',
     'topvhost.com',
-    'freenom.com'
+    'freenom.com',
+    'maff.com'
 ])
 
 def output(target):
