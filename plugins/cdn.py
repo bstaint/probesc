@@ -46,7 +46,8 @@ pattern = {
         'alicloudlayer.com',
         'akadns.net',
         'qingcdn.com',
-        'ourwebpic.com'
+        'ourwebpic.com',
+        'aodianyun.com'
     ])
 }
 
