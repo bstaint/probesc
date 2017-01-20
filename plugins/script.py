@@ -11,7 +11,7 @@ pattern = {
     },
     'cookie': {
         'JSP': ['JSESSIONID'],
-        'PHP': ['PHPSESSID'],
+        'PHP': ['PHPSESSID', 'wp-super-cache'],
         'ASP/ASPX': ['ASPSESSION', 'ASP.NET']
     },
     'ext': {

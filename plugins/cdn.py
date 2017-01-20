@@ -47,7 +47,8 @@ pattern = {
         'akadns.net',
         'qingcdn.com',
         'ourwebpic.com',
-        'aodianyun.com'
+        'aodianyun.com',
+        '51cache.com'
     ])
 }
 
