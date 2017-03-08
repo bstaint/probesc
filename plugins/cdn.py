@@ -48,7 +48,8 @@ pattern = {
         'qingcdn.com',
         'ourwebpic.com',
         'aodianyun.com',
-        '51cache.com'
+        '51cache.com',
+        'webcname.net'
     ])
 }
 
