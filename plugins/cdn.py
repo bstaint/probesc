@@ -49,7 +49,8 @@ pattern = {
         'ourwebpic.com',
         'aodianyun.com',
         '51cache.com',
-        'webcname.net'
+        'webcname.net',
+        '.ydvip'
     ])
 }
 
