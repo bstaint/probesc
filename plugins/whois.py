@@ -31,7 +31,8 @@ pattern = set([
     'gandi.net',
     'topvhost.com',
     'freenom.com',
-    'maff.com'
+    'maff.com',
+    'whoisbao@126.com'
 ])
 
 def output(target):
